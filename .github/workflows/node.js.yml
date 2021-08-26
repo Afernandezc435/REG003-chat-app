@@ -33,8 +33,9 @@ jobs:
         with:
           fetch-depth: 0
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-        with: heroku_api_key: ${{secrets.HEROKU_API_KEY}} 
-        heroku_app_name: "chat-app-aomy" #Must be unique in Heroku 
-        heroku_email: ${{ secrets.HEROKU_EMAIL }} 
-        buildpack: "https://github.com/HashNuke/heroku-buildpack-elixir.git" 
+        with:
+         heroku_api_key: ${{secrets.HEROKU_API_KEY}} 
+         heroku_app_name: "chat-app-aomy" #Must be unique in Heroku 
+         heroku_email: ${{ secrets.HEROKU_EMAIL }} 
+         buildpack: "https://github.com/HashNuke/heroku-buildpack-elixir.git" 
      
