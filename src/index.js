@@ -1,13 +1,11 @@
-const http = require('http');
-const server = http.createServer();
-
-function mensaje(petic, resp) {
-  resp.writeHead(200, { 'content-type': 'text/plain' });
-  resp.write('Hola Mundo');
-  resp.end();
-}
-server.on('request', mensaje);
-
-server.listen(3000, function () {
-  console.log('La Aplicación está funcionando en el puerto 3000');
+const dotenv = require('dotenv');
+const express = require('express');
+dotenv.config();
+const application = express();
+const port = process.env.PORT || 3000;
+application.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+application.listen(port, () => {
+  console.log(`Listening on port ${port}`);
 });
