@@ -32,16 +32,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Heroku login credentials
-        run: |
-          cat > ~/.netrc <<EOF
-            machine api.heroku.com
-              login $HEROKU_EMAIL
-              password $HEROKU_API_KEY
-            machine git.heroku.com
-              login $HEROKU_EMAIL
-              password $HEROKU_API_KEY
-          EOF
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with: heroku_api_key: ${{secrets.HEROKU_API_KEY}} 
+        heroku_app_name: "chat-app-aomy" #Must be unique in Heroku 
+        heroku_email: ${{ secrets.HEROKU_EMAIL }} 
+        buildpack: "https://github.com/HashNuke/heroku-buildpack-elixir.git" 
+     
