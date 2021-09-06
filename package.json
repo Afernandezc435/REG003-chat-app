@@ -7,7 +7,7 @@
     "dev": "nodemon --exec 'ts-node src/index.ts'",
     "start": "node src/index.js",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --verbose",
     "db-up": "docker-compose up -d",
     "db-status": "docker-compose ps",
     "db-down": "docker-compose down"
