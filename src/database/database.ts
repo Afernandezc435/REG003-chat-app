@@ -6,7 +6,7 @@ const uri = process.env.DATABASE_URL || `postgres://${process.env.DB_USER}:${pro
 console.log(uri)
 const sequelize = new Sequelize(uri,{dialect: 'postgres',
 dialectOptions: {
-ssl: true
+ssl: {rejectUnauthorized: false}
 }})
 const main = async () => {
   try {
