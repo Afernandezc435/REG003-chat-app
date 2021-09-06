@@ -1,7 +1,7 @@
 
 require('dotenv').config()
 const { Sequelize, DataTypes} = require('sequelize')
-const uri = `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`
+const uri = process.env.DATABASE_URL || `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`
 console.log(uri)
 const sequelize = new Sequelize(uri)
 const main = async () => {
