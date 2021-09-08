@@ -12,7 +12,79 @@
     "db-status": "docker-compose ps",
     "db-down": "docker-compose down"
   },
+  "jest":{
+    "testEnvironment": "node",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ]
+  },
+  "tslintConfig": {
+    "extends": [
+      "tslint:latest",
+      "tslint-config-prettier"
+    ],
+    "rules": {
+      "class-name": true,
+      "comment-format": [
+        true,
+        "check-space"
+      ],
+      "indent": [
+        true,
+        "spaces"
+      ],
+      "one-line": [
+        true,
+        "check-open-brace",
+        "check-whitespace"
+      ],
+      "no-var-keyword": true,
+      "quotemark": [
+        true,
+        "double",
+        "avoid-escape"
+      ],
+      "semicolon": [
+        true,
+        "always",
+        "ignore-bound-class-methods"
+      ],
+      "whitespace": [
+        true,
+        "check-branch",
+        "check-decl",
+        "check-operator",
+        "check-module",
+        "check-separator",
+        "check-type"
+      ],
+      "typedef-whitespace": [
+        true,
+        {
+          "call-signature": "nospace",
+          "index-signature": "nospace",
+          "parameter": "nospace",
+          "property-declaration": "nospace",
+          "variable-declaration": "nospace"
+        },
+        {
+          "call-signature": "onespace",
+          "index-signature": "onespace",
+          "parameter": "onespace",
+          "property-declaration": "onespace",
+          "variable-declaration": "onespace"
+        }
+      ],
+      "no-internal-module": true,
+      "no-trailing-whitespace": true,
+      "no-null-keyword": true,
+      "prefer-const": true,
+      "jsdoc-format": true
+    }
+  },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "moment": "^2.29.1",
@@ -21,14 +93,19 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.6.5",
     "socket.io": "^4.1.2",
-    "ts-node": "^10.2.1"
+    "ts-node": "^10.2.1",
+    "tslint-config-prettier": "^1.18.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.13",
+    "@types/jest": "^27.0.1",
     "@types/morgan": "^1.9.3",
     "eslint-plugin-prettier": "^3.4.0",
+    "jest": "^27.1.0",
     "nodemon": "^2.0.12",
     "prettier": "^2.3.2",
+    "ts-jest": "^27.0.5",
     "typescript": "^4.4.2"
   }
 }
