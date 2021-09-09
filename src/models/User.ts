@@ -1,54 +1,62 @@
 import bcrypt from "bcrypt";
-import Sequelize from "sequelize";
+import { Sequelize, Model, DataTypes, ModelDefined, Optional } from "sequelize";
+import { sequelize } from '../database/database'
 
-/*export const User = sequelize.define(
-  "User",
-  {
-    id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    name: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-    password: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      set(value: string) {
-        const hash = bcrypt.hashSync(value, 8);
-        this.setDataValue("password", hash);
-      },
-    },
-    lastname: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-    email: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    date: {
-      type: Sequelize.DATE,
-      allowNull: false,
-    },
-    admin: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false,
-    },
-  },
-  {
-    timestamps: false,
-    createdAt:false,
-    updateAt: false,
-  }
-)
 
-User.hashPassword = function(password: Number) {
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)
+interface UserInstance extends Model {
+  id?:string;
+  username: string;
+  password: string;
+  avatarURL?: string;
 }
-User.isValidPassword = function(password, hash) {
-  return bcrypt.compareSync(hash, password)
-}*/
+interface UserCreationInstance extends Optional<UserInstance, 'id' |'username' | 'password' | 'avatarURL'> {}
+const UserModel: ModelDefined<UserInstance, UserCreationInstance> = sequelize.define(
+  "User", 
+  {
+  id: {
+    primaryKey: true,
+    type: DataTypes.STRING,
+  },
+  username: {
+    type: DataTypes.STRING,
+    validate: {
+      isAlphanumeric: {
+        arg: true,
+        msg:"The username can only contain letters and numbers"
+      },
+      len: {
+        arg:[8, 127],
+        msg: "The username needs to be between 3 and 5 characteres long"
+      }
+    }
+  },
+  email: {
+    type: DataTypes.STRING,
+    unique: true,
+    validate: {
+      isEmail: {
+        args: true,
+        msg: "Email Invalid"
+      }
+    }
+  },
+  password: {
+    type: DataTypes.STRING,
+    validate: {
+      len: {
+        args: [8, 127],
+        msg: "The password needs to between 8 and 128 characteres long"
+      }
+    }
+  },
+  avatarURL: {
+    type: DataTypes.STRING,
+    defaultValue: "",
+    validate: {
+      len: {
+        args: [0,1023],
+        msg: "The length cannot be longer than 1024 characteres"
+      }
+    }
+  }
+})
