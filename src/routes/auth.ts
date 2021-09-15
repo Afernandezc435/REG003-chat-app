@@ -1,8 +1,11 @@
-import {Router} from 'express'
+/* import { Router } from "express";
+import { checkJwt } from "../middlewares/checkJwt";
 
-const router: Router = Router()
-router.get('/', (req, res) => {
-  res.send('Hello World')
-})
+const router = Router();
+//Login route
+router.post("/login", );
 
-export default router
+//Change my password
+router.post("/change-password", [checkJwt], );
+
+export default router; */

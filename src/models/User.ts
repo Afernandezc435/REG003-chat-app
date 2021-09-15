@@ -1,33 +1,42 @@
 import bcrypt from "bcrypt";
-import { Sequelize, Model, DataTypes, ModelDefined, Optional } from "sequelize";
-import { sequelize } from '../database/database'
+import { getNewId} from "../utils/common"
+import { Model, DataTypes, ModelDefined, Optional } from "sequelize";
+import { sequelize } from '../database/sequelize'
 
+const hashPasswordIfChanged = async (user:any, options:any) => {
+  const SALT_FACTOR = 10;
+  if (user.changed("password")) {
+    const hashedPassword = await bcrypt.hash(user.password, SALT_FACTOR);
+    // eslint-disable-next-line
+    user.password = hashedPassword;
+    return hashedPassword;
+  }
+};
 
 interface UserInstance extends Model {
-  id?:string;
-  username: string;
+  user_id?: string;
+  name: string;
+  email: string;
   password: string;
-  avatarURL?: string;
+  photo_url?: string;
 }
-interface UserCreationInstance extends Optional<UserInstance, 'id' |'username' | 'password' | 'avatarURL'> {}
+interface UserCreationInstance extends Optional<UserInstance, 'user_id' |'name' |'email'| 'password' | 'photo_url'> {}
+
 const UserModel: ModelDefined<UserInstance, UserCreationInstance> = sequelize.define(
-  "User", 
+  "user", 
   {
-  id: {
+  user_id: {
     primaryKey: true,
     type: DataTypes.STRING,
+    defaultValue: getNewId
   },
-  username: {
+  name: {
     type: DataTypes.STRING,
     validate: {
       isAlphanumeric: {
         arg: true,
         msg:"The username can only contain letters and numbers"
       },
-      len: {
-        arg:[8, 127],
-        msg: "The username needs to be between 3 and 5 characteres long"
-      }
     }
   },
   email: {
@@ -47,9 +56,9 @@ const UserModel: ModelDefined<UserInstance, UserCreationInstance> = sequelize.de
         args: [8, 127],
         msg: "The password needs to between 8 and 128 characteres long"
       }
-    }
+    },
   },
-  avatarURL: {
+  photo_url: {
     type: DataTypes.STRING,
     defaultValue: "",
     validate: {
@@ -59,4 +68,20 @@ const UserModel: ModelDefined<UserInstance, UserCreationInstance> = sequelize.de
       }
     }
   }
+  
+}, {
+  timestamps: true,
+  tableName: 'users',
+  underscored: true,
+  hooks: {
+    beforeCreate: hashPasswordIfChanged,
+    beforeUpdate: hashPasswordIfChanged
+  }
 })
+
+export default UserModel;
+export {
+  UserModel,
+  UserInstance
+}
+;

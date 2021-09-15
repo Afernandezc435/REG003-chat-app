@@ -1,0 +1,32 @@
+import { Sequelize, Model, DataTypes, ModelDefined, Optional } from "sequelize";
+import { sequelize } from '../database/sequelize'
+
+interface ChannelInstance extends Model {
+  channel_id?: string;
+  name?: string;
+  public?: boolean;
+  message_group?: boolean;
+  created_at?: Date;
+  updated_at?: Date;
+}
+interface ChannelCreationInstance extends Optional<ChannelInstance, 'channel_id' | 'name' | 'public' | 'message_group' | 'created_at' | 'updated_at'> {}
+const ChannelModel: ModelDefined<ChannelInstance, ChannelCreationInstance>= sequelize.define(
+  "Channel",
+  {
+    channel_id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
+    name: DataTypes.STRING,
+    public: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
+    message_group: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
+  }
+)
+
+export default ChannelModel;
