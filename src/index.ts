@@ -1,5 +1,5 @@
 import app from './server/server'
-import './database/database'
+import './database/sequelize'
 require('dotenv').config()
 
 async function main() {
