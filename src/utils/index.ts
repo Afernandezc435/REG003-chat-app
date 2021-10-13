@@ -30,8 +30,21 @@ const getToken = (req:Request):string => {
   return '';
 }
 
+const getDataToken = (req:Request ):any => {
+  let decoded:any
+  let token = getToken(req)
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET || 'develop');
+  } catch(err) {
+    throw err
+  }
+  
+  return decoded
+}
+
 export {
   createToken,
   getToken,
-  decodeToken
+  decodeToken,
+  getDataToken
 }

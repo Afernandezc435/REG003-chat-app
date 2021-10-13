@@ -1,8 +1,8 @@
-import { sequelize } from '../database/sequelize'
+import { sequelize } from '../../database/sequelize'
 import {Transaction} from 'sequelize'
-import models from '../models/index'
-import modelUser, {UserInstance} from '../models/User'
-import {getNewId} from '../utils/common'
+import models from '../../models/index'
+import modelUser, {UserInstance} from '../../models/User'
+import {getNewId} from '../../utils/common'
 
 
 //crud user

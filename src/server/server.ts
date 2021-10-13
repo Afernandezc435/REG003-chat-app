@@ -1,37 +1,22 @@
 import express, {Application, json} from 'express'
-import * as socketio from 'socket.io'
+import * as socketIo from 'socket.io'
 import * as path from 'path'
 import indexRoutes from '../routes/index'
 import morgan from 'morgan'
 import { Request, Response } from 'express'
 import cors, {CorsRequest, CorsOptions} from 'cors'
+import * as http from 'http'
+
 
 const app: Application = express()
-const http = require("http").Serve(app)
-const io = require("socket.io")(http)
-
+const httpServer = http.createServer(app);
+const io = socketIo(httpServer);
 
 //Setting
 app.set('port',4001)
 //middlewares
 app.use(morgan('dev'))
-io.on("connection", function(socket:any) {
-    console.log("a user connected")
-    socket.on("message", function(message: any) {
-        console.log(message)
-    })
-})
-
-/*const corsOptionsDelegate = function (req:CorsRequest, callback: (err: Error | null, options?: CorsOptions) => void ) {
-    const corsOptions: CorsOptions = { 
-        origin: '*', 
-        allowedHeaders: '*', 
-        credentials: true, 
-        maxAge: 3600, 
-        methods: "GET,HEAD,PUT,PATCH,POST,DELETE" } 
-    callback(null, corsOptions) // callback expects two parameters: error and options
-}*/
-
+//Socket.io setup
 app.use(cors({ credentials: true, origin: "*", allowedHeaders: '*' }));
 //app.options('*', cors(corsOptionsDelegate));
 app.use(json());

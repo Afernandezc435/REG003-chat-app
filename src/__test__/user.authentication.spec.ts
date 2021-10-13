@@ -1,8 +1,8 @@
 import { signUp, signIn} from "../controllers/authController";
 import { Request, Response} from 'express'
-import { createUser, findUser} from '../services/user'
+import { createUser, findUser} from '../services/User/user'
 import { existsSync } from 'fs';
-import * as dep from '../services/user'
+import * as dep from '../services/User/user'
 // mockear la importacion
  jest.mock('../services/user', () => {
   return {

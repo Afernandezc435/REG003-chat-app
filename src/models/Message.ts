@@ -56,3 +56,7 @@ const MessageModel: ModelDefined<MessageChatInstance, MessageChatCreationInstanc
   MessageModel.belongsTo(Channel, { foreignKey: 'channel_id', targetKey: 'channel_id' })
 
   export default MessageModel;
+
+  export {
+    MessageChatCreationInstance
+  }

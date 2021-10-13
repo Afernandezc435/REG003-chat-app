@@ -1,6 +1,6 @@
 import modelUser, { } from '../models/User'
 import bcrypt from 'bcrypt'
-import * as service from '../services/user'
+import * as service from '../services/User/user'
 import { Request, Response } from 'express'
 import userModel  from '../models/User'
 import * as utils from '../utils/index'
