@@ -6,12 +6,14 @@ import morgan from 'morgan'
 import { Request, Response } from 'express'
 import cors, {CorsRequest, CorsOptions} from 'cors'
 import * as http from 'http'
+import sockets from '../socket/sockets'
 
 
 const app: Application = express()
 const httpServer = http.createServer(app);
-const io = socketIo(httpServer);
+const io = new socketIo.Server(httpServer);
 
+sockets(io)
 //Setting
 app.set('port',4001)
 //middlewares
@@ -23,5 +25,4 @@ app.use(json());
 
 // routes
 app.use(indexRoutes)
-app.get("/userst", (req: Request,res: Response) => {res.json({hola: 'Mundo'})})
 export default app;

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import MessageModel from '../models/Message';
 import Channel from '../models/channel_user';
 import user from '../models/User';
-import { getDataToken } from '../utils';
+import { decodeToken, getDataToken } from '../utils';
 import ChannelModel from '../models/Channel';
 import ChannelUserModel from '../models/channel_user';
 
@@ -29,11 +29,11 @@ export default {
     }
   },
 
-  createMessage: async (req: Request, res: Response) => {
+  createMessage: async (body:any) => {
     try {
-      const { channel_id, user_id, text } = req.body;
+      const { token, channel_id, user_id, text } = body;
 
-      const current_user: any = getDataToken(req);
+      const current_user: any = decodeToken(token);
 
       let data: any = {
         user_id_sender: current_user.user_id.toString(),
@@ -65,11 +65,11 @@ export default {
     }
   },
 
-  getMessage: async (req: any, res: Response) => {
+  getMessage: async (data:any) => {
     try {
-      const current_user: any = getDataToken(req);
-      const { channel_id } = req.body;
-      const { offset } = req.query;
+      const { token, channel_id } = data;
+      const current_user: any = getDataToken(token);
+      // const { offset } = req.query;
 
       const channel = await ChannelModel.findOne({
         raw: true,
@@ -82,13 +82,13 @@ export default {
           where: { channel_id: channel_id, user_id: current_user.user_id },
         });
         if (!member) {
-          res.status(403).send({
+          return{
             meta: {
               type: 'error',
               status: 403,
               message: 'Not Authorized',
             },
-          });
+          }
         }
       }
 
@@ -96,27 +96,27 @@ export default {
         order: [['created_at', 'DESC']],
         where: { channel_id: channel_id },
         limit: 30,
-        offset,
+        // offset,
         raw: true,
       });
 
-      return res.status(200).send({
+      return {
         meta: {
           type: 'success',
           status: 200,
           message: '',
         },
         messageList: messageList.reverse(),
-      });
+      };
     } catch (err) {
       console.log(err);
-      res.status(500).send({
+      return {
         meta: {
           type: 'error',
           status: 500,
           message: 'server error',
         },
-      });
+      }
     }
   },
 };
