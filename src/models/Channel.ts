@@ -1,5 +1,6 @@
 import { Sequelize, Model, DataTypes, ModelDefined, Optional } from "sequelize";
 import { sequelize } from '../database/sequelize'
+import { getNewId } from "../utils/common";
 
 interface ChannelInstance extends Model {
   channel_id?: string;
@@ -11,11 +12,12 @@ interface ChannelInstance extends Model {
 }
 interface ChannelCreationInstance extends Optional<ChannelInstance, 'channel_id' | 'name' | 'public' | 'message_group' | 'created_at' | 'updated_at'> {}
 const ChannelModel: ModelDefined<ChannelInstance, ChannelCreationInstance>= sequelize.define(
-  "Channel",
+  "channel",
   {
     channel_id: {
       type: DataTypes.STRING,
-      primaryKey: true
+      primaryKey: true,
+      defaultValue: getNewId
     },
     name: DataTypes.STRING,
     public: {
@@ -26,6 +28,10 @@ const ChannelModel: ModelDefined<ChannelInstance, ChannelCreationInstance>= sequ
       type: DataTypes.BOOLEAN,
       defaultValue: false
     }
+  }, {
+    timestamps: true,
+    tableName: 'channels',
+    underscored: true,
   }
 )
 

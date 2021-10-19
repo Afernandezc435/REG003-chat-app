@@ -11,7 +11,7 @@ interface ChannelUserInstance extends Model {
 }
 interface ChannelCreationInstance extends Optional<ChannelUserInstance, 'channel_id' | 'user_id' | 'is_admin' | 'created_at'> {}
 const ChannelUserModel: ModelDefined<ChannelUserInstance, ChannelCreationInstance>= sequelize.define(
-  "ChannelUser",
+  "channel_user",
   {
     channel_id: {
       type: DataTypes.STRING,
@@ -23,7 +23,9 @@ const ChannelUserModel: ModelDefined<ChannelUserInstance, ChannelCreationInstanc
       defaultValue: true
     }
   }, {
-    timestamps: false
+    timestamps: true,
+    tableName: 'channels_users',
+    underscored: true,
   }
 )
 const userId = ChannelUserModel.hasMany(User, {foreignKey: 'user_id'})

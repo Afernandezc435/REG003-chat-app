@@ -13,7 +13,6 @@ const app: Application = express()
 const httpServer = http.createServer(app);
 const io = new socketIo.Server(httpServer);
 
-sockets(io)
 //Setting
 app.set('port',4001)
 //middlewares
@@ -25,4 +24,6 @@ app.use(json());
 
 // routes
 app.use(indexRoutes)
+sockets(io)
 export default app;
+export  {app, httpServer};

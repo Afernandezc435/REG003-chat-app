@@ -2,6 +2,7 @@ import { Model, DataTypes, ModelDefined, Optional } from "sequelize";
 import { sequelize } from '../database/sequelize'
 import  User from './User'
 import Channel from './Channel'
+import { getNewId } from "../utils/common";
 
 interface MessageChatInstance extends Model {
   message_id?: string;
@@ -16,11 +17,12 @@ interface MessageChatInstance extends Model {
 }
 interface MessageChatCreationInstance extends Optional<MessageChatInstance, 'message_id' | 'user_id_sender' | 'user_id_receipter' | 'photo_url' | 'text' | 'channel_id' | 'user_id' | 'created_at' | 'updated_at'> {}
 const MessageModel: ModelDefined<MessageChatInstance, MessageChatCreationInstance> = sequelize.define(
-  "Message",
+  "message",
   {
     message_id: {
       primaryKey: true,
       type: DataTypes.STRING,
+      defaultValue: getNewId
     },
     user_id_sender: DataTypes.STRING,
     user_id_receipter:DataTypes.STRING,
@@ -44,9 +46,11 @@ const MessageModel: ModelDefined<MessageChatInstance, MessageChatCreationInstanc
         }
       }
     }
-    
- 
-  })
+  }, {
+    timestamps: true,
+    tableName: 'messages',
+    underscored: true,
+  } )
   User.hasMany(MessageModel, { foreignKey: 'user_id_sender', sourceKey: 'user_id' });
   User.hasMany(MessageModel, { foreignKey: 'user_id_receipter', sourceKey: 'user_id' });
   Channel.hasMany(MessageModel, { foreignKey: 'channel_id', sourceKey: 'channel_id' });

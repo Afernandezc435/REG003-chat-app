@@ -5,6 +5,7 @@ import user from '../models/User';
 import { decodeToken, getDataToken } from '../utils';
 import ChannelModel from '../models/Channel';
 import ChannelUserModel from '../models/channel_user';
+import { defaultFormat } from 'moment';
 
 export default {
   getAllMessage: async (req: Request, res: Response) => {
@@ -37,8 +38,8 @@ export default {
 
       let data: any = {
         user_id_sender: current_user.user_id.toString(),
-        user_id_receipter: user_id.toString(),
-        channel_id: channel_id.toString(),
+        user_id_receipter: user_id || null,
+        channel_id: channel_id || null,
         text: text.toString(),
       };
 
